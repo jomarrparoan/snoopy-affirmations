@@ -4,9 +4,9 @@
 // Affirmations database organized by mood
 const affirmations = {
     happy: [
-        "Your smile lights up the room like sunshine on a perfect day!",
+        "Smile ka na plssssss",
         "You have the most contagious laugh that makes everyone around you happy!",
-        "Your positive energy is absolutely magnetic and inspiring!",
+        "Ilove your positive energyyy!",
         "You're like a ray of sunshine on even the cloudiest days!",
         "Your happiness is so genuine and beautiful to witness!",
         "You have this amazing ability to find joy in the simplest things!",
@@ -16,7 +16,7 @@ const affirmations = {
         "You're proof that happiness is a choice, and you choose it beautifully!"
     ],
     sad: [
-        "It's okay to feel sad sometimes - you're human and that's beautiful!",
+        "It's okay to feel sad sometimes - you're human and that's beautiful. Okay lang yan!",
         "Your feelings are valid, and you're allowed to take time to heal!",
         "You're stronger than you know, and this feeling won't last forever!",
         "You have a heart of gold, and brighter days are ahead!",
@@ -25,7 +25,8 @@ const affirmations = {
         "Your tears are just your heart's way of healing!",
         "You're not alone in feeling this way, and you're loved!",
         "Your sadness doesn't define you - your strength does!",
-        "You have the courage to get through anything life throws at you!"
+        "You have the courage to get through anything life throws at you!",
+        "Ok lang yan... iiyak mo yan!"
     ],
     stressed: [
         "You're handling this stress with more grace than you realize!",
