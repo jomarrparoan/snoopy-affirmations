@@ -1,3 +1,6 @@
+// Firebase is now initialized in the HTML file
+// You'll need to add your Firebase config in the HTML file
+
 // Affirmations database organized by mood
 const affirmations = {
     happy: [
@@ -71,6 +74,8 @@ const moodSnoopy = document.getElementById('moodSnoopy');
 const submitForm = document.getElementById('submitForm');
 const moodSelect = document.getElementById('moodSelect');
 const affirmationInput = document.getElementById('affirmationInput');
+const totalAffirmations = document.getElementById('totalAffirmations');
+const userContributions = document.getElementById('userContributions');
 
 // Mood-specific Snoopy images
 const moodImages = {
@@ -83,6 +88,7 @@ const moodImages = {
 };
 
 let selectedMood = null;
+let userAffirmations = {};
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
@@ -113,6 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initially disable generate button
     generateBtn.disabled = true;
     generateBtn.style.opacity = '0.6';
+
+    // Load user affirmations from Firebase (when configured)
+    loadUserAffirmations();
+    updateStats();
 });
 
 // Generate affirmation function
@@ -123,16 +133,26 @@ function generateAffirmation() {
     }
 
     let affirmation;
+    let allAffirmations = [];
     
+    // Combine original and user affirmations
     if (selectedMood === 'random') {
         // Get all affirmations from all moods
-        const allAffirmations = Object.values(affirmations).flat();
-        affirmation = allAffirmations[Math.floor(Math.random() * allAffirmations.length)];
+        Object.keys(affirmations).forEach(mood => {
+            allAffirmations = allAffirmations.concat(affirmations[mood]);
+            if (userAffirmations[mood]) {
+                allAffirmations = allAffirmations.concat(userAffirmations[mood]);
+            }
+        });
     } else {
         // Get affirmations for selected mood
-        const moodAffirmations = affirmations[selectedMood];
-        affirmation = moodAffirmations[Math.floor(Math.random() * moodAffirmations.length)];
+        allAffirmations = [...affirmations[selectedMood]];
+        if (userAffirmations[selectedMood]) {
+            allAffirmations = allAffirmations.concat(userAffirmations[selectedMood]);
+        }
     }
+
+    affirmation = allAffirmations[Math.floor(Math.random() * allAffirmations.length)];
 
     // Hide the card first
     affirmationCard.classList.add('hidden');
@@ -172,17 +192,92 @@ function handleSubmit(e) {
         return;
     }
     
-    // Add the new affirmation to the database
-    if (!affirmations[mood]) {
-        affirmations[mood] = [];
+    // Add the new affirmation to local database
+    if (!userAffirmations[mood]) {
+        userAffirmations[mood] = [];
     }
-    affirmations[mood].push(affirmation);
+    userAffirmations[mood].push(affirmation);
+    
+    // Save to Firebase (when configured)
+    saveAffirmationToFirebase(mood, affirmation);
     
     // Show success message
     showSuccessMessage();
     
     // Reset form
     submitForm.reset();
+    
+    // Update stats
+    updateStats();
+}
+
+// Save affirmation to Firebase
+function saveAffirmationToFirebase(mood, affirmation) {
+    if (window.firebaseDatabase) {
+        const database = window.firebaseDatabase;
+        const ref = window.firebaseRef;
+        const push = window.firebasePush;
+        const set = window.firebaseSet;
+        
+        const affirmationsRef = ref(database, 'affirmations/' + mood);
+        const newAffirmationRef = push(affirmationsRef);
+        
+        set(newAffirmationRef, {
+            text: affirmation,
+            timestamp: Date.now(),
+            mood: mood
+        });
+    }
+}
+
+// Load user affirmations from Firebase
+function loadUserAffirmations() {
+    if (window.firebaseDatabase) {
+        const database = window.firebaseDatabase;
+        const ref = window.firebaseRef;
+        const get = window.firebaseGet;
+        
+        const affirmationsRef = ref(database, 'affirmations');
+        
+        get(affirmationsRef)
+            .then((snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    Object.keys(data).forEach(mood => {
+                        userAffirmations[mood] = [];
+                        Object.keys(data[mood]).forEach(key => {
+                            userAffirmations[mood].push(data[mood][key].text);
+                        });
+                    });
+                }
+                updateStats();
+            })
+            .catch((error) => {
+                console.log("Error loading affirmations:", error);
+            });
+    }
+}
+
+// Update stats display
+function updateStats() {
+    let total = 0;
+    let userTotal = 0;
+    
+    // Count original affirmations
+    Object.keys(affirmations).forEach(mood => {
+        total += affirmations[mood].length;
+    });
+    
+    // Count user affirmations
+    Object.keys(userAffirmations).forEach(mood => {
+        if (userAffirmations[mood]) {
+            total += userAffirmations[mood].length;
+            userTotal += userAffirmations[mood].length;
+        }
+    });
+    
+    totalAffirmations.textContent = total;
+    userContributions.textContent = userTotal;
 }
 
 // Show success message
@@ -194,7 +289,7 @@ function showSuccessMessage() {
         <div class="success-content">
             <div class="success-icon">🎉</div>
             <h3>Thank you!</h3>
-            <p>Your affirmation has been added to Snoopy's collection!</p>
+            <p>Your affirmation has been added to Snoopy's collection and shared with everyone! 💖</p>
         </div>
     `;
     

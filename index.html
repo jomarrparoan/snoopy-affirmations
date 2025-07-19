@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>snoopy's affirmations</title>
+    <title>Snoopy's Affirmations</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
@@ -19,7 +19,7 @@
                     <img src="images/snoopy.png" alt="Snoopy" class="snoopy-image">
                 </div>
             </div>
-            <p class="subtitle">HELLO! I'm Snoopy and I'm here to help you feel better!</p>
+            <p class="subtitle">HELLO! I'm Snoopy and I'm here to help you feel better! 🐕</p>
         </header>
 
         <main>
@@ -56,7 +56,7 @@
 
             <div class="submit-section">
                 <h2>Share Your Own Affirmation</h2>
-                <p>Help spread positivity by adding your own words of encouragement!</p>
+                <p>Help spread positivity by adding your own words of encouragement! Everyone will see your affirmations! 💖</p>
                 <form id="submitForm" class="submit-form">
                     <select id="moodSelect" required>
                         <option value="">Choose a mood category</option>
@@ -69,6 +69,20 @@
                     <textarea id="affirmationInput" placeholder="Write your affirmation here..." required></textarea>
                     <button type="submit" class="submit-btn">Share Affirmation</button>
                 </form>
+            </div>
+
+            <div class="stats-section">
+                <h3>Community Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalAffirmations">0</span>
+                        <span class="stat-label">Total Affirmations</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="userContributions">0</span>
+                        <span class="stat-label">User Contributions</span>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -83,6 +97,35 @@
         </footer>
     </div>
 
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBvtP_o6g8hTGZyaMVrTA7VdHnixGDJHFI",
+            authDomain: "snoopy-affirmations.firebaseapp.com",
+            databaseURL: "https://snoopy-affirmations-default-rtdb.firebaseio.com",
+            projectId: "snoopy-affirmations",
+            storageBucket: "snoopy-affirmations.firebasestorage.app",
+            messagingSenderId: "416383577188",
+            appId: "1:416383577188:web:73a76d2fefe80cb3344371",
+            measurementId: "G-QGCKLE5YPF"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        
+        // Make Firebase available globally
+        window.firebaseDatabase = database;
+        window.firebaseRef = ref;
+        window.firebasePush = push;
+        window.firebaseSet = set;
+        window.firebaseGet = get;
+    </script>
     <script src="script.js"></script>
 </body>
 </html> 
