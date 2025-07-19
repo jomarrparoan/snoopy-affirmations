@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>snoopy's affirmations</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="snoopy-header">
+                <div class="snoopy-icon">
+                    <img src="images/snoopy.png" alt="Snoopy" class="snoopy-image">
+                </div>
+                <h1>snoopy's affirmations</h1>
+                <div class="snoopy-icon">
+                    <img src="images/snoopy.png" alt="Snoopy" class="snoopy-image">
+                </div>
+            </div>
+            <p class="subtitle">HELLO! I'm Snoopy and I'm here to help you feel better!</p>
+        </header>
+
+        <main>
+            <div class="mood-section">
+                <h2>What's your mood today?</h2>
+                <div class="mood-options">
+                    <button class="mood-btn" data-mood="happy">😊 Happy</button>
+                    <button class="mood-btn" data-mood="sad">😢 Sad</button>
+                    <button class="mood-btn" data-mood="stressed">😰 Stressed</button>
+                    <button class="mood-btn" data-mood="confident">💪 Confident</button>
+                    <button class="mood-btn" data-mood="loved">💖 Loved</button>
+                    <button class="mood-btn" data-mood="random">🎲 Random</button>
+                </div>
+            </div>
+
+            <div class="generate-section">
+                <button id="generateBtn" class="generate-btn">
+                    <span class="btn-text">Generate Affirmation</span>
+                    <span class="btn-icon">✨</span>
+                </button>
+            </div>
+
+            <div class="affirmation-display" id="affirmationDisplay">
+                <div class="affirmation-card hidden" id="affirmationCard">
+                    <div class="mood-snoopy-container">
+                        <img id="moodSnoopy" src="" alt="Snoopy" class="mood-snoopy-image">
+                    </div>
+                    <div class="snoopy-quote">"</div>
+                    <p id="affirmationText"></p>
+                    <div class="snoopy-quote">"</div>
+                    <div class="snoopy-signature">- Snoopy</div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <h2>Share Your Own Affirmation</h2>
+                <p>Help spread positivity by adding your own words of encouragement!</p>
+                <form id="submitForm" class="submit-form">
+                    <select id="moodSelect" required>
+                        <option value="">Choose a mood category</option>
+                        <option value="happy">Happy</option>
+                        <option value="sad">Sad</option>
+                        <option value="stressed">Stressed</option>
+                        <option value="confident">Confident</option>
+                        <option value="loved">Loved</option>
+                    </select>
+                    <textarea id="affirmationInput" placeholder="Write your affirmation here..." required></textarea>
+                    <button type="submit" class="submit-btn">Share Affirmation</button>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <div class="snoopy-footer">
+                <p>Made with loveee by jom! ily and keep going</p>
+                <div class="snoopy-dance">
+                    <img src="images/snoopy.png" alt="Snoopy" class="snoopy-image-small">
+                    💃
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
