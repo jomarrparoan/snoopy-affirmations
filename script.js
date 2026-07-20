@@ -1,7 +1,4 @@
-// Firebase is now initialized in the HTML file
-// You'll need to add your Firebase config in the HTML file
 
-// Affirmations database organized by mood
 const affirmations = {
     happy: [
         "Smile ka na plssssss",
@@ -66,7 +63,7 @@ const affirmations = {
     ]
 };
 
-// DOM elements
+
 const moodButtons = document.querySelectorAll('.mood-btn');
 const generateBtn = document.getElementById('generateBtn');
 const affirmationCard = document.getElementById('affirmationCard');
@@ -78,7 +75,7 @@ const affirmationInput = document.getElementById('affirmationInput');
 const totalAffirmations = document.getElementById('totalAffirmations');
 const userContributions = document.getElementById('userContributions');
 
-// Mood-specific Snoopy images
+
 const moodImages = {
     happy: 'images/snoopy_happy.jpg',
     sad: 'images/snoopy_sad.jpg',
@@ -91,42 +88,42 @@ const moodImages = {
 let selectedMood = null;
 let userAffirmations = {};
 
-// Initialize the page
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Add click event listeners to mood buttons
+    
     moodButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Remove selected class from all buttons
+            
             moodButtons.forEach(btn => btn.classList.remove('selected'));
             
-            // Add selected class to clicked button
+            
             this.classList.add('selected');
             
-            // Store selected mood
+           
             selectedMood = this.dataset.mood;
             
-            // Enable generate button
+            
             generateBtn.disabled = false;
             generateBtn.style.opacity = '1';
         });
     });
 
-    // Add click event listener to generate button
+    
     generateBtn.addEventListener('click', generateAffirmation);
 
-    // Add submit event listener to form
+    
     submitForm.addEventListener('submit', handleSubmit);
 
-    // Initially disable generate button
+    
     generateBtn.disabled = true;
     generateBtn.style.opacity = '0.6';
 
-    // Load user affirmations from Firebase (when configured)
+    
     loadUserAffirmations();
     updateStats();
 });
 
-// Generate affirmation function
+
 function generateAffirmation() {
     if (!selectedMood) {
         alert('Please select a mood first!');
@@ -136,9 +133,9 @@ function generateAffirmation() {
     let affirmation;
     let allAffirmations = [];
     
-    // Combine original and user affirmations
+    
     if (selectedMood === 'random') {
-        // Get all affirmations from all moods
+        
         Object.keys(affirmations).forEach(mood => {
             allAffirmations = allAffirmations.concat(affirmations[mood]);
             if (userAffirmations[mood]) {
@@ -146,7 +143,7 @@ function generateAffirmation() {
             }
         });
     } else {
-        // Get affirmations for selected mood
+        
         allAffirmations = [...affirmations[selectedMood]];
         if (userAffirmations[selectedMood]) {
             allAffirmations = allAffirmations.concat(userAffirmations[selectedMood]);
@@ -155,33 +152,33 @@ function generateAffirmation() {
 
     affirmation = allAffirmations[Math.floor(Math.random() * allAffirmations.length)];
 
-    // Hide the card first
+  
     affirmationCard.classList.add('hidden');
     
-    // Wait a bit, then show the new affirmation
+   
     setTimeout(() => {
-        // Set the mood-specific Snoopy image
+       
         const imageSrc = moodImages[selectedMood];
         moodSnoopy.src = imageSrc;
         
         affirmationText.textContent = affirmation;
         affirmationCard.classList.remove('hidden');
         
-        // Add a little bounce effect
+       
         affirmationCard.style.animation = 'none';
         setTimeout(() => {
             affirmationCard.style.animation = 'bounce 0.6s ease';
         }, 10);
     }, 300);
 
-    // Add sparkle effect to generate button
+    
     generateBtn.style.animation = 'none';
     setTimeout(() => {
         generateBtn.style.animation = 'bounce 0.6s ease';
     }, 10);
 }
 
-// Handle form submission
+
 function handleSubmit(e) {
     e.preventDefault();
     
@@ -193,7 +190,7 @@ function handleSubmit(e) {
         return;
     }
     
-    // Add the new affirmation to local database
+
     if (!userAffirmations[mood]) {
         userAffirmations[mood] = [];
     }
@@ -231,7 +228,7 @@ function saveAffirmationToFirebase(mood, affirmation) {
     }
 }
 
-// Load user affirmations from Firebase
+
 function loadUserAffirmations() {
     if (window.firebaseDatabase) {
         const database = window.firebaseDatabase;
@@ -259,17 +256,17 @@ function loadUserAffirmations() {
     }
 }
 
-// Update stats display
+
 function updateStats() {
     let total = 0;
     let userTotal = 0;
     
-    // Count original affirmations
+   
     Object.keys(affirmations).forEach(mood => {
         total += affirmations[mood].length;
     });
     
-    // Count user affirmations
+    
     Object.keys(userAffirmations).forEach(mood => {
         if (userAffirmations[mood]) {
             total += userAffirmations[mood].length;
@@ -281,9 +278,9 @@ function updateStats() {
     userContributions.textContent = userTotal;
 }
 
-// Show success message
+
 function showSuccessMessage() {
-    // Create success message element
+    
     const successMsg = document.createElement('div');
     successMsg.className = 'success-message';
     successMsg.innerHTML = `
@@ -294,7 +291,6 @@ function showSuccessMessage() {
         </div>
     `;
     
-    // Add styles for success message
     successMsg.style.cssText = `
         position: fixed;
         top: 50%;
@@ -311,7 +307,7 @@ function showSuccessMessage() {
         animation: slideIn 0.5s ease;
     `;
     
-    // Add animation keyframes
+    
     if (!document.querySelector('#success-styles')) {
         const style = document.createElement('style');
         style.id = 'success-styles';
@@ -341,10 +337,10 @@ function showSuccessMessage() {
         document.head.appendChild(style);
     }
     
-    // Add to page
+
     document.body.appendChild(successMsg);
     
-    // Remove after 3 seconds
+    
     setTimeout(() => {
         successMsg.style.animation = 'slideIn 0.5s ease reverse';
         setTimeout(() => {
@@ -353,9 +349,9 @@ function showSuccessMessage() {
     }, 3000);
 }
 
-// Add some fun hover effects
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Add hover sound effect simulation (visual feedback)
+    
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => {
         button.addEventListener('mouseenter', function() {
@@ -367,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Add typing effect to the first load
+    
     setTimeout(() => {
         const subtitle = document.querySelector('.subtitle');
         if (subtitle) {
@@ -376,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 500);
     
-    // Add fade in animation
+    
     if (!document.querySelector('#fade-styles')) {
         const style = document.createElement('style');
         style.id = 'fade-styles';
